@@ -9,7 +9,7 @@ const ACTIONS = {
   SET_CHILD_FILES: "set-child-files",
 }
 
-export const ROOT_FOLDER = { name: "RootFolder", id: null, path: [] }
+export const ROOT_FOLDER = { name: "Root Folder", id: null, path: [] }
 
 function reducer(state, { type, payload }) {
   switch (type) {
