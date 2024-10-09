@@ -41,7 +41,7 @@ export default function Profile() {
           <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
             Update Profile
           </Link>
-          <button onClick={handleLogout} className="btn btn-danger mt-3">
+          <button onClick={handleLogout} className="btn btn-danger w-100 mt-3">
             Log Out
           </button>
         </Card.Body>

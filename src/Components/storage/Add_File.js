@@ -81,7 +81,7 @@ export default function AddFileButton({ currentFolder }) {
 
   return (
     <>
-      <label className="btn btn-success btn-lg m-2 mr-2 text-white">
+      <label className="btn btn-primary  btn-lg m-2 text-white" variant="outline-success">
         Upload File 
         <input
           type="file"

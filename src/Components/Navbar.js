@@ -16,15 +16,15 @@ export default function NavbarComponent() {
   }
   
   return (
-    <Navbar bg="primary" expand="sm" className="d-flex justify-content-between">
-      <Navbar.Brand as={Link} to="/" className="text-white" fontSize="3rem">
-        MyDropbox
+    <Navbar bg="primary" expand="sm" className="d-flex justify-content-between border border-primary rounded" >
+      <Navbar.Brand as={Link} to="/" className="text-white ms-3" fontSize="3rem">
+        My Dropbox
       </Navbar.Brand>
-      <Nav>
+      <Nav className="me-3">
         <Nav.Link as={Link} to="/user" className="text-white ">
           Update Profile
         </Nav.Link>
-        <Button onClick={handleLogout} className="p-2 text-white" >
+        <Button onClick={handleLogout} className="p-2 text-white btn btn-danger" >
           Logout
         </Button>
       </Nav>
