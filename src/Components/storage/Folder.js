@@ -4,25 +4,42 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { deleteFolder } from "../../firebaseConfig"; // Import deleteFolder function
+import swal from "sweetalert"; // Import SweetAlert
 
 export default function Folder({ folder }) {
   // Handler for deleting a folder
   const handleDelete = (e) => {
     e.preventDefault();
 
-    // Ask for confirmation before deleting
-    if (window.confirm(`Are you sure you want to delete the folder "${folder.name}"?`)) {
-      // Delete the folder using the deleteFolder function
-      deleteFolder(folder.id)
-        .then(() => {
-          console.log("Folder deleted successfully");
-          alert("Folder deleted successfully"); // Optional: alert success
-        })
-        .catch((error) => {
-          console.error("Error deleting folder: ", error);
-          alert("Failed to delete folder"); // Optional: alert failure
-        });
-    }
+    // SweetAlert confirmation before deleting
+    swal({
+      title: `Are you sure you want to delete the folder "${folder.name}"?`,
+      text: "Once deleted, you will not be able to recover this folder!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        // Delete the folder using the deleteFolder function
+        deleteFolder(folder.id)
+          .then(() => {
+            // SweetAlert success message
+            swal("Folder deleted successfully!", {
+              icon: "success",
+            });
+          })
+          .catch((error) => {
+            // SweetAlert error message
+            swal("Failed to delete folder!", {
+              icon: "error",
+            });
+            console.error("Error deleting folder: ", error);
+          });
+      } else {
+        // SweetAlert cancellation message (optional)
+        swal("Your folder is safe!");
+      }
+    });
   };
 
   return (
