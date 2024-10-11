@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { storage, db } from "../../firebaseConfig";
 import { useAuthenticate } from "../../Context";
 import swal from "sweetalert"; // Import SweetAlert
 
+// Simple Base64 encoding function
+function encodeUrl(url) {
+  return btoa(url); // Encoding the URL to Base64
+}
+
 export default function File({ file, currentFolder }) {
   const { currentUser } = useAuthenticate();
+  const [expirationDate, setExpirationDate] = useState(null); // State for expiration date
 
   // Delete function to handle file deletion
   function handleDelete() {
@@ -43,16 +49,35 @@ export default function File({ file, currentFolder }) {
               })
               .catch((error) => {
                 swal("Failed to delete file!", { icon: "error" });
-                console.error("Error deleting file from Firestore: ", error);
+                console.error("Error deleting file: ", error);
               });
           })
           .catch((error) => {
             swal("Failed to delete file from storage!", { icon: "error" });
-            console.error("Error deleting file from Storage: ", error);
+            console.error("Error deleting file: ", error);
           });
       } else {
         swal("Your file is safe!");
       }
+    });
+  }
+
+  // Function to create an encrypted shared link with expiration date
+  function createShareableLink() {
+    const encryptedUrl = encodeUrl(file.url);
+    const shareableLink = `${window.location.origin}/shared-file/${encryptedUrl}`;
+
+    // Get the current date and set expiration date (e.g., 24 hours from now)
+    const expiration = new Date();
+    expiration.setHours(expiration.getHours() + 24); // Set expiration to 24 hours from now
+
+    setExpirationDate(expiration.toISOString()); // Store the expiration date
+
+    swal({
+      title: "Shareable Link Created!",
+      text: `Link: ${shareableLink} (Expires: ${expiration.toLocaleString()})`,
+      icon: "info",
+      buttons: true,
     });
   }
 
@@ -70,7 +95,7 @@ export default function File({ file, currentFolder }) {
           <img
             src={file.url}
             alt="File Preview"
-            style={{ maxWidth: "150px", maxHeight: "150px" }}
+            style={{ maxWidth: "100px", maxHeight: "100px" }}
             className="mb-2"
           />
         )}
@@ -80,7 +105,7 @@ export default function File({ file, currentFolder }) {
           <iframe
             src={file.url}
             title="File Preview"
-            style={{ maxWidth: "150px", maxHeight: "150px" }}
+            style={{ maxWidth: "150px", height: "150px" }}
             className="mb-2"
           />
         )}
@@ -90,7 +115,7 @@ export default function File({ file, currentFolder }) {
           <video
             controls
             src={file.url}
-            style={{ maxWidth: "220px", maxHeight: "220px" }}
+            style={{ maxWidth: "150px", maxHeight: "150px" }}
             className="mb-2"
           />
         )}
@@ -117,6 +142,14 @@ export default function File({ file, currentFolder }) {
         onClick={handleDelete}
       >
         Delete
+      </button>
+
+      {/* Share Button to create a shareable link */}
+      <button
+        className="btn btn-outline-info mt-2"
+        onClick={createShareableLink}
+      >
+        Share
       </button>
     </div>
   );
