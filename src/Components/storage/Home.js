@@ -26,7 +26,7 @@ function Home() {
         {childFolders.length > 0 && (
           <div className="d-flex flex-wrap">
             {childFolders.map(childFolder => (
-              <div key={childFolder.id} style={{ maxWidth: "150px" }} className="p-2">
+              <div key={childFolder.id} style={{ maxWidth: "300px" }} className="p-2">
                 <Folder folder={childFolder} />
               </div>
             ))}
@@ -36,7 +36,7 @@ function Home() {
         {childFiles.length > 0 && (
           <div className="d-flex flex-wrap">
             {childFiles.map(childFile => (
-              <div key={childFile.id} style={{ maxWidth: "150px" }} className="p-2">
+              <div key={childFile.id} style={{ maxWidth: "300px" }} className="p-3">
                 <File file={childFile} />
               </div>
             ))}
